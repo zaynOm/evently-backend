@@ -30,6 +30,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public static $cacheKey = 'users';
 
     protected $fillable = [
+        'full_name',
         'email',
         'password',
     ];
@@ -207,6 +208,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     {
         $id = $id ?? request()->route('id');
         $rules = [
+            'full_name' => 'required|string|max:255',
             'role' => [
                 'required',
                 new Enum(ROLE_ENUM::class),
@@ -216,6 +218,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
             'password' => 'required|string',
         ];
         if ($id !== null) {
+            $rules['full_name'] = 'nullable|string|max:255';
             $rules['email'] .= ','.$id;
             $rules['password'] = 'nullable|string';
         }
