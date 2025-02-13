@@ -2,6 +2,8 @@
 
 namespace Database\Seeders\Permissions;
 
+use App\Enums\ROLE as ROLE_ENUM;
+use App\Models\Role;
 use App\Services\ACLService;
 use Illuminate\Database\Seeder;
 
@@ -27,5 +29,12 @@ class CrudPermissionSeeder extends Seeder
             $aclService->assignScopePermissionsToRole($advertiserRole, 'interests', ['read']);
             $aclService->assignScopePermissionsToRole($advertiserRole, 'games', ['create', 'read_own']);
         */
+
+        $userRole = Role::where('name', ROLE_ENUM::USER)->first();
+        $adminRole = Role::where('name', ROLE_ENUM::ADMIN)->first();
+
+        $aclService->createScopePermissions('categories', ['create', 'read', 'update', 'delete']);
+        $aclService->assignScopePermissionsToRole($userRole, 'categories', ['read']);
+        $aclService->assignScopePermissionsToRole($adminRole, 'categories', ['create', 'read', 'update', 'delete']);
     }
 }
