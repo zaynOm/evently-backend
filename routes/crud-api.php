@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\EventParticipantController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:api')->group(
@@ -31,6 +32,13 @@ Route::middleware('auth:api')->group(
                         Route::put('/{id}', 'updateOne');
                         Route::patch('/{id}', 'patchOne');
                         Route::delete('/{id}', 'deleteOne');
+                    }
+                );
+                Route::controller(EventParticipantController::class)->group(
+                    function () {
+                        Route::post('/{id}/join', 'join');
+                        Route::post('/{id}/leave', 'leave');
+                        Route::get('/{id}/participants', 'participants');
                     }
                 );
             }
