@@ -81,4 +81,40 @@ class UserController extends CrudController
             return response()->json(['success' => false, 'errors' => [__('common.unexpected_error')]]);
         }
     }
+
+    public function getHostedEvents()
+    {
+        try {
+            $user = auth()->user();
+            if (! $user) {
+                return response()->json(['success' => false, 'errors' => [__('users.not_found')]]);
+            }
+
+            return response()->json(['success' => true, 'data' => ['items' => $user->hostedEvents]]);
+        } catch (\Exception $e) {
+            Log::error('Error caught in function UserController.getHostedEvents : '.$e->getMessage());
+            Log::error($e->getTraceAsString());
+
+            return response()->json(['success' => false, 'errors' => [__('common.unexpected_error')]]);
+        }
+    }
+
+    public function getAttendedEvents()
+    {
+        try {
+            $user = auth()->user();
+            if (! $user) {
+                return response()->json(['success' => false, 'errors' => [__('users.not_found')]]);
+            }
+
+            $events = $user->participatingIn->makeHidden(['pivot']);
+
+            return response()->json(['success' => true, 'data' => ['items' => $events]]);
+        } catch (\Exception $e) {
+            Log::error('Error caught in function UserController.getAttendedEvents : '.$e->getMessage());
+            Log::error($e->getTraceAsString());
+
+            return response()->json(['success' => false, 'errors' => [__('common.unexpected_error')]]);
+        }
+    }
 }
