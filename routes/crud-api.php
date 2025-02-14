@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\EventController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:api')->group(
@@ -8,6 +9,21 @@ Route::middleware('auth:api')->group(
         Route::prefix('categories')->name('categories.')->group(
             function () {
                 Route::controller(CategoryController::class)->group(
+                    function () {
+                        Route::post('/', 'createOne');
+                        Route::get('/{id}', 'readOne');
+                        Route::get('/', 'readAll');
+                        Route::put('/{id}', 'updateOne');
+                        Route::patch('/{id}', 'patchOne');
+                        Route::delete('/{id}', 'deleteOne');
+                    }
+                );
+            }
+        );
+
+        Route::prefix('events')->name('events.')->group(
+            function () {
+                Route::controller(EventController::class)->group(
                     function () {
                         Route::post('/', 'createOne');
                         Route::get('/{id}', 'readOne');
