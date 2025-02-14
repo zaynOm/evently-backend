@@ -204,6 +204,16 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         $this->notify(new ResetPasswordNotification($token));
     }
 
+    public function hostedEvents()
+    {
+        return $this->hasMany(Event::class, 'host_id');
+    }
+
+    public function participatingIn()
+    {
+        return $this->belongsToMany(Event::class, 'event_participants');
+    }
+
     public function rules($id = null)
     {
         $id = $id ?? request()->route('id');
