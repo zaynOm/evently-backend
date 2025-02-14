@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use DB;
+
 class Event extends BaseModel
 {
     public static $cacheKey = 'events';
@@ -43,6 +45,22 @@ class Event extends BaseModel
     public function participants()
     {
         return $this->belongsToMany(User::class, 'event_participants');
+    }
+
+    protected static function booted()
+    {
+        static::created(function ($event) {
+            $event->host->givePermission("events.{$event->id}.update");
+            $event->host->givePermission("events.{$event->id}.delete");
+        });
+
+        static::deleted(
+            function ($event) {
+                $permissions = Permission::where('name', 'like', 'events.'.$event->id.'.%')->get();
+                DB::table('users_permissions')->whereIn('permission_id', $permissions->pluck('id'))->delete();
+                Permission::destroy($permissions->pluck('id'));
+            }
+        );
     }
 
     public function rules($id = null)
