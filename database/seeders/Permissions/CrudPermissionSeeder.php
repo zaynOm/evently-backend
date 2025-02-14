@@ -38,7 +38,7 @@ class CrudPermissionSeeder extends Seeder
         $aclService->assignScopePermissionsToRole($adminRole, 'categories', ['create', 'read', 'update', 'delete']);
 
         $aclService->createScopePermissions('events', ['create', 'read', 'update', 'delete']);
-        $aclService->assignScopePermissionsToRole($userRole, 'events', ['create', 'read', 'update', 'delete']);
+        $aclService->assignScopePermissionsToRole($userRole, 'events', ['create', 'read']);
         $aclService->assignScopePermissionsToRole($adminRole, 'events', ['create', 'read', 'update', 'delete']);
     }
 }
