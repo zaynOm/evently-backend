@@ -71,7 +71,7 @@ class Event extends BaseModel
             'title' => 'required|string',
             'description' => 'required|string',
             'date' => 'required|date',
-            'time' => 'required|date_format:H:i:s',
+            'time' => 'required|date_format:H:i',
             'location' => 'required|string',
             'capacity' => 'required|integer',
             'host_id' => 'required|integer|exists:users,id',
