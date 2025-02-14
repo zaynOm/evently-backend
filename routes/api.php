@@ -51,6 +51,8 @@ Route::middleware('auth:api')->group(
                 Route::controller(UserController::class)->group(
                     function () {
                         Route::post('/', 'createOne');
+                        Route::get('/hosting-events', 'getHostedEvents');
+                        Route::get('/attended-events', 'getAttendedEvents');
                         Route::get('/{id}', 'readOne');
                         Route::get('/', 'readAll');
                         Route::put('/{id}', 'updateOne');
