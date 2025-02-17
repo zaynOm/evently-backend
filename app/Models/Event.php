@@ -22,12 +22,26 @@ class Event extends BaseModel
 
     protected $hidden = [
         'host',
+        'category',
+        'participants',
     ];
 
     protected $appends = [
+        'category_name',
+        'is_participant',
         'host_name',
         'participants_count',
     ];
+
+    public function getCategoryNameAttribute()
+    {
+        return $this->category->name;
+    }
+
+    public function getIsParticipantAttribute()
+    {
+        return $this->participants->contains('id', auth()->id());
+    }
 
     public function getHostNameAttribute()
     {
