@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\ROLE;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Mail\WelcomeMail;
 use App\Models\User;
 use DB;
 use Illuminate\Http\Request;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
+use Mail;
 
 class AuthController extends Controller
 {
@@ -85,6 +87,8 @@ class AuthController extends Controller
                     );
                     $user->assignRole(ROLE::USER);
                     $token = $user->createToken('authToken', ['expires_in' => 60 * 24 * 30])->plainTextToken;
+
+                    Mail::to($user->email)->queue(new WelcomeMail($user));
 
                     return response()->json(['success' => true, 'data' => ['token' => $token], 'message' => __('auth.register_success')]);
                 }
