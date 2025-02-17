@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\EventCreatedMail;
 use App\Models\Event as ModelsEvent;
 use Illuminate\Http\Request;
 use Log;
+use Mail;
 
 class EventController extends CrudController
 {
@@ -34,5 +36,10 @@ class EventController extends CrudController
 
             return response()->json(['success' => false, 'errors' => [__('common.unexpected_error')]]);
         }
+    }
+
+    public function afterCreateOne($item)
+    {
+        Mail::to($item->host->email)->send(new EventCreatedMail($item, $item->host));
     }
 }
