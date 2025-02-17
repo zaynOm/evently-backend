@@ -253,8 +253,8 @@ trait HasDataTables
 
     public function getOperatorAndValue(string $operatorKey, ?string $value)
     {
-        $operators = [
-            'equals' => (object) [
+        return match ($operatorKey) {
+            'equals', 'is' => (object) [
                 'operator' => '=',
                 'value' => $value,
             ],
@@ -270,6 +270,26 @@ trait HasDataTables
                 'operator' => 'like',
                 'value' => '%'.$value,
             ],
+            'not' => (object) [
+                'operator' => '<>',
+                'value' => $value,
+            ],
+            'after' => (object) [
+                'operator' => '>',
+                'value' => $value,
+            ],
+            'onOrAfter' => (object) [
+                'operator' => '>=',
+                'value' => $value,
+            ],
+            'before' => (object) [
+                'operator' => '<',
+                'value' => $value,
+            ],
+            'onOrBefore' => (object) [
+                'operator' => '<=',
+                'value' => $value,
+            ],
             'isEmpty' => (object) [
                 'operator' => '=',
                 'value' => '',
@@ -284,8 +304,10 @@ trait HasDataTables
                 'operator' => 'in',
                 'value' => explode(',', $value),
             ],
-        ];
-
-        return $operators[$operatorKey];
+            default => (object) [
+                'operator' => $operatorKey,
+                'value' => $value,
+            ]
+        };
     }
 }
