@@ -27,7 +27,17 @@ class DataTableParams
 
     public function assignFilterParam(?string $filterParam = null)
     {
-        return is_string($filterParam) && json_validate($filterParam) ? json_decode($filterParam) : null;
+        if (! is_string($filterParam) || ! json_validate($filterParam)) {
+            return null;
+        }
+
+        $decoded = json_decode($filterParam);
+
+        if (empty($decoded) || (! property_exists($decoded, 'items') || empty($decoded->items))) {
+            return null;
+        }
+
+        return $decoded;
     }
 
     public function hasOrderParam()
