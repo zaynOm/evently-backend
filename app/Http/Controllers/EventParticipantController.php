@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\JoinedEventMail;
 use App\Models\Event;
 use App\Models\EventParticipant;
 use Illuminate\Support\Facades\Log;
+use Mail;
 
 class EventParticipantController extends CrudController
 {
@@ -40,6 +42,8 @@ class EventParticipantController extends CrudController
             }
 
             $event->participants()->attach(auth()->id());
+
+            Mail::to(auth()->user()->email)->queue(new JoinedEventMail($event, auth()->user()));
 
             return response()->json(['success' => true, 'message' => [__('events.joined')]]);
         } catch (\Exception $e) {
