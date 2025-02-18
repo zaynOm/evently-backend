@@ -235,4 +235,17 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
         return $rules;
     }
+
+    public function scopeFilterByAdminRole($query, $isAdmin)
+    {
+        if ($isAdmin) {
+            return $query->whereHas('roles', function ($q) {
+                $q->where('name', 'admin');
+            });
+        } else {
+            return $query->whereDoesntHave('roles', function ($q) {
+                $q->where('name', 'admin');
+            });
+        }
+    }
 }

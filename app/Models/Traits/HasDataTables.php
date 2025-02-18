@@ -82,6 +82,18 @@ trait HasDataTables
 
     public function scopeDataTableFilter(Builder $query, $column, $operatorWithValue, string $LinkOperator = LinkOperator::AND->value)
     {
+        // Special case for roles boolean filtering
+        if ($column === 'roles' && property_exists($operatorWithValue, 'value')) {
+            $isAdmin = $operatorWithValue->value === 'true';
+            if ($LinkOperator === LinkOperator::AND->value) {
+                return $query->filterByAdminRole($isAdmin);
+            } else {
+                return $query->orWhere(function ($q) use ($isAdmin) {
+                    $q->filterByAdminRole($isAdmin);
+                });
+            }
+        }
+
         $aggregateFunctions = ['count(', 'avg(', 'sum(', 'min(', 'max('];
         $aggregateColumns = collect($query->getQuery()->columns)->filter(
             function ($expression) use ($aggregateFunctions, $query) {
