@@ -251,7 +251,7 @@ trait HasDataTables
         return $query;
     }
 
-    public function getOperatorAndValue(string $operatorKey, ?string $value)
+    public function getOperatorAndValue(string $operatorKey, string|array|null $value)
     {
         return match ($operatorKey) {
             'equals', 'is' => (object) [
@@ -302,7 +302,7 @@ trait HasDataTables
             ],
             'isAnyOf' => (object) [
                 'operator' => 'in',
-                'value' => explode(',', $value),
+                'value' => is_array($value) ? $value : explode(',', (string) $value),
             ],
             default => (object) [
                 'operator' => $operatorKey,
