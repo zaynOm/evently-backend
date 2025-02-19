@@ -27,7 +27,7 @@ Evently is a simple event management platform.
    ```
 
 4. Database setup:
-   To run the project locally you need `mysql`.
+   To run the project locally you need eather `mysql` or `mariadb`.
 
 - If you don't have it already installed on you system you can follow the official installation guide [here](https://dev.mysql.com/doc/mysql-installation-excerpt/5.7/en/).
 - Or use `docker`.
