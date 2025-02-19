@@ -1,21 +1,62 @@
+# Evently - Event Management Platform
+
+Evently is a simple event management platform.
+
 ## Getting Started
 
-# Tech Stack
+1. Clone the repo:
 
-- Auth : Sanctum
+   ```sh
+   git clone https://github.com/zaynOm/evently-backend.git
+   ```
 
-# Setup
+2. Install dependencies:
 
-## VSCode
+   ```sh
+   composer install
+   ```
 
-- Install PHP CS FIXER
+3. Environment variables:
 
-## Roles & Permissions
+   Copy the `.env.example` into a new file named `.env` manually.
 
-- At the start of the project, you want to setup the roles and permissions.
-- You can do this by editing the `database/seeders/PermissionSeeder.php` file.
+   Or you can use this command.
 
-## Users
+   ```sh
+   cp .env.example .env
+   ```
 
-- At the start of the project, you want to create default users.
-- You can do this by editing the `database/seeders/UserSeeder.php` file.
+4. Database setup:
+   To run the project locally you need `mysql`.
+
+- If you don't have it already installed on you system you can follow the official installation guide [here](https://dev.mysql.com/doc/mysql-installation-excerpt/5.7/en/).
+- Or use `docker`.
+
+  ```sh
+  docker run --name <your-database-name> -e MYSQL_ROOT_PASSWORD=<your-database-password> -p 3306:3306 -d mysql:latest
+  ```
+
+- Change the environment variables inside `.env`.
+
+  ```sh
+  # Database settings
+
+  DB_CONNECTION=mysql
+  DB_HOST=127.0.0.1
+  DB_PORT=3306
+  DB_DATABASE=your-database-name
+  DB_USERNAME=root
+  DB_PASSWORD=your-database-password
+  ```
+
+- Run database migrations & seeds:
+
+  ```sh
+  php artisan migrate --seed
+  ```
+
+5. Start the server:
+
+```sh
+php artidan serve
+```
