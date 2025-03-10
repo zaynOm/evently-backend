@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Cache;
 use DB;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Event extends BaseModel
 {
+    use HasFactory;
+
     public static $cacheKey = 'events';
 
     protected $fillable = [
