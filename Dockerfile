@@ -92,7 +92,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www
 COPY . .
 
-RUN composer install --optimize-autoloader --no-dev
+RUN composer install --no-scripts --optimize-autoloader --no-dev
 RUN php artisan config:cache
 
 CMD php artisan serve --host=0.0.0.0 --port=10000
